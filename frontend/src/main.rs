@@ -32,3 +32,7 @@ pub fn App() -> Html {
         />
     )
 }
+
+fn main() {
+    yew::Renderer::<App>::new().render();
+}
