@@ -39,7 +39,6 @@ dependencies = [
  "nanoid",
  "serde",
  "serde_json",
- "sqlx",
  "web-sys",
  "yew",
 ]
