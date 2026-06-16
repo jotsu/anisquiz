@@ -3,6 +3,7 @@ use sqlx::sqlite::SqlitePoolOptions;
 
 mod model;
 mod handlers;
+mod errors;
 
 use model::*;
 

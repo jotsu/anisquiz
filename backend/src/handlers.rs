@@ -100,7 +100,7 @@ impl Team {
         Path(game_id): Path<String>,
     ) -> Result<Json<Vec<Team>>, StatusCode> {
     let rows = sqlx::query_as::<_, Team>(
-        "SELECT * FROM teams WHERE parent_game_id = ? ORDER BY no DESC"
+        "SELECT * FROM teams WHERE parent_game_id = ? ORDER BY no ASC"
         )
         .bind(game_id)
         .fetch_all(&pool)
@@ -154,7 +154,7 @@ impl Quest {
         Path(game_id): Path<String>,
     ) -> Result<Json<Vec<Quest>>, StatusCode> {
     let rows = sqlx::query_as::<_, Quest>(
-        "SELECT * FROM quests WHERE parent_game_id = ? ORDER BY no DESC"
+        "SELECT * FROM quests WHERE parent_game_id = ? ORDER BY no ASC"
         )
         .bind(&game_id)
         .fetch_all(&pool)
@@ -207,7 +207,7 @@ impl LogEntry {
         Path(game_id): Path<String>,
     ) -> Result<Json<Vec<Team>>, StatusCode> {
     let rows = sqlx::query_as::<_, Team>(
-        "SELECT * FROM logs WHERE parent_game_id = ? ORDER BY no DESC"
+        "SELECT * FROM logs WHERE parent_game_id = ? ORDER BY created_at DESC"
         )
         .bind(&game_id)
         .fetch_all(&pool)
