@@ -183,7 +183,7 @@ impl Quest {
 }
 
 impl LogEntry {
-        pub async fn create(
+    pub async fn create(
         State(pool): State<SqlitePool>,
         Path(game_id): Path<String>,
         Json(payload): Json<CreateLogEntry>,
@@ -207,7 +207,7 @@ impl LogEntry {
         Path(game_id): Path<String>,
     ) -> Result<Json<Vec<Team>>, StatusCode> {
     let rows = sqlx::query_as::<_, Team>(
-        "SELECT * FROM quests WHERE parent_game_id = ? ORDER BY no DESC"
+        "SELECT * FROM logs WHERE parent_game_id = ? ORDER BY no DESC"
         )
         .bind(&game_id)
         .fetch_all(&pool)
