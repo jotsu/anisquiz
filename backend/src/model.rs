@@ -17,7 +17,7 @@ pub struct Game {
 pub struct Team {
     id: String,
     parent_game_id: String,
-    no: usize,
+    no: u32,
     name: String,
     score: i32,
 }
@@ -26,7 +26,7 @@ pub struct Team {
 pub struct Quest {
     id: String,
     parent_game_id: String,
-    no: usize,
+    no: u32,
     src: String,
     pts: i32,
 }

@@ -27,8 +27,10 @@ async fn main() {
         .route("/", get(|| async { "Welcome, cyber traveler!" }))
         .route("/games", post(Game::create).get(Game::list))
         .route("/g/{game_id}", get(Game::get))
-        .route("/g/{game_id}/t/{team_id}", get(|| async { "This is team"}))
-        .route("/g/{game_id}/q/{id}", get(|| async { "This is quest"}))
+        .route("/g/{game_id}/teams", post(Team::create).get(Team::list))
+        .route("/g/{game_id}/t/{team_id}", get(Team::get))
+        .route("/g/{game_id}/quests", post(Quest::create).get(Quest::list))
+        .route("/g/{game_id}/q/{quest_id}", get(Quest::get))
         .with_state(pool);
         
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.expect("tokio::net::TcpListener could not bind to port 3000");
