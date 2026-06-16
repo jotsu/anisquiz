@@ -4,28 +4,28 @@ use axum::Json;
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]
-struct AppError {
+pub struct AppError {
     #[serde(skip)]
     status: StatusCode,
     message: String,
 }
 
 impl AppError {
-    fn bad_request(message: impl Into<String>) -> Self {
+    pub fn bad_request(message: impl Into<String>) -> Self {
         Self {
             status: StatusCode::BAD_REQUEST,
             message: message.into(),
         }
     }
 
-    fn not_found(message: impl Into<String>) -> Self {
+    pub fn not_found(message: impl Into<String>) -> Self {
         Self {
             status: StatusCode::NOT_FOUND,
             message: message.into(),
         }
     }
 
-    fn internal(message: impl Into<String>) -> Self {
+    pub fn internal(message: impl Into<String>) -> Self {
         Self {
             status: StatusCode::INTERNAL_SERVER_ERROR,
             message: message.into(),
