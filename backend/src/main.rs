@@ -31,6 +31,9 @@ async fn main() {
         .route("/g/{game_id}/t/{team_id}", get(Team::get))
         .route("/g/{game_id}/quests", post(Quest::create).get(Quest::list))
         .route("/g/{game_id}/q/{quest_id}", get(Quest::get))
+        .route("/g/{game_id}/logs", post(LogEntry::create).get(LogEntry::list))
+        .route("/g/{game_id}/log/{log_id}", get(LogEntry::get))
+        
         .with_state(pool);
         
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.expect("tokio::net::TcpListener could not bind to port 3000");

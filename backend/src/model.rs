@@ -32,7 +32,7 @@ pub struct Quest {
 }
 
 #[derive(Serialize, FromRow)]
-struct LogEntry {
+pub struct LogEntry {
     id: String,
     parent_game_id: String,
     created_at: NaiveDateTime,
