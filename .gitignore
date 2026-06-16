@@ -1,3 +1,7 @@
 /target/
+
 /backend/quests/
+/backend/.env
+/backend/anisquiz.db
+
 /frontend/dist/
