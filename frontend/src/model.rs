@@ -1,10 +1,10 @@
-use sqlx::FromRow;
+use serde::{Serialize, Deserialize};
+use yew::Properties;
 use chrono::NaiveDateTime;
-use serde::Serialize;
 
-// ----- GAME OBJECTS -----
+// ----- OBJECTS -----
 
-#[derive(Serialize, FromRow)]
+#[derive(Serialize, Deserialize, PartialEq, Properties)]
 pub struct Game {
     id: String,
     title: String,
@@ -15,7 +15,7 @@ pub struct Game {
     active_quest_id: Option<String>,
 }
 
-#[derive(Serialize, FromRow)]
+#[derive(Serialize, Deserialize)]
 pub struct Team {
     id: String,
     parent_game_id: String,
@@ -24,7 +24,7 @@ pub struct Team {
     score: i32,
 }
 
-#[derive(Serialize, FromRow)]
+#[derive(Serialize, Deserialize)]
 pub struct Quest {
     id: String,
     parent_game_id: String,
@@ -33,10 +33,19 @@ pub struct Quest {
     pts: i32,
 }
 
-#[derive(Serialize, FromRow)]
+#[derive(Serialize, Deserialize)]
 pub struct LogEntry {
     id: String,
     parent_game_id: String,
     created_at: NaiveDateTime,
     message: String,
+}
+
+
+// ----- METHODS -----
+
+impl Game {
+    //GETTERS
+    pub fn id(&self) -> String { self.id.clone() }
+    pub fn title(&self) -> String { self.title.clone() }
 }

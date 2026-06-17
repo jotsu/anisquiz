@@ -4,14 +4,15 @@ use axum::{
     Json,
 };
 use serde::Deserialize;
-use super::{
+use crate::{
     AppState,
     errors::AppError,
     model::{Game, Team, Quest, LogEntry}
 };
 
 
-//REQUEST PAYLOADS
+// ----- REQUEST PAYLOADS -----
+
 #[derive(Deserialize)]
 pub struct CreateGame {
     title: String,
@@ -34,7 +35,8 @@ pub struct CreateLogEntry {
     message: String,
 }
 
-//HANDLERS
+// ----- REQUEST HANDLERS -----
+
 impl Game {
     pub async fn create(
         State(state): State<AppState>,

@@ -1,38 +1,14 @@
-use yew:: prelude::*;
-use nanoid::nanoid;
+use yew::prelude::*;
 
-pub mod game;
-use game::*;
+pub mod model;
+mod components;
+
+fn main() {
+    // trunk serve --proxy-backend=http://localhost:3000
+    yew::Renderer::<App>::new().render();
+}
 
 #[component]
 pub fn App() -> Html {
-    let game = Game {
-        id: nanoid!(10),
-        title: "Animcowa Memówka".to_string(),
-        teams: Vec::<Team>::new(),
-        quests: Vec::<Quest>::new(),
-        round: 1,
-        turn: 1,
-        active_team: None,
-        active_quest: None,
-        log: Vec::<String>::new(),
-    };
-
-    html!(
-        <GameComponent
-            id={game.id}
-            title={game.title}
-            teams={game.teams}
-            quests={game.quests}
-            round={game.round}
-            turn={game.turn}
-            active_team={game.active_team}
-            active_quest={game.active_quest}
-            log={game.log}
-        />
-    )
-}
-
-fn main() {
-    yew::Renderer::<App>::new().render();
+    html!("Welcome, cyber traveler!")
 }

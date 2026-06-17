@@ -5,3 +5,5 @@
 /backend/anisquiz.db
 
 /frontend/dist/
+
+*.old

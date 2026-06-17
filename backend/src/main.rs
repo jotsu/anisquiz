@@ -19,11 +19,11 @@ use errors::AppError;
 async fn main() {
 
     dotenvy::dotenv().ok();
+    
     let database_url = std::env::var("DATABASE_URL")
         .expect("DATABASE_URL must be set");
     let api_key = std::env::var("API_KEY")
         .expect("API_KEY must be set");
-
     let pool = SqlitePool::connect(&database_url).await
         .expect(format!("Failed to connect to database {}", &database_url).as_str());
     
@@ -53,8 +53,8 @@ async fn main() {
         .merge(public)
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.expect("tokio::net::TcpListener could not bind to port 3000");
-    println!("Listening on http://0.0.0.0:3000");
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await.expect("tokio::net::TcpListener could not bind to port 3000");
+    println!("Listening on http://127.0.0.1:3000");
     axum::serve(listener, app).await.expect("axum::serve could not create service");
 }
 
