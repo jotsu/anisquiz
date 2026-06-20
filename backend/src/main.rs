@@ -9,10 +9,9 @@ use axum::{
 };
 
 mod model;
-mod handlers;
 mod errors;
 
-use model::{Game, Team, Quest, LogEntry};
+use model::{game::Game, team::Team, quest::Quest, log::LogEntry};
 use errors::AppError;
 
 #[tokio::main]

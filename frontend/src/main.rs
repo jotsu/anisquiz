@@ -1,7 +1,9 @@
 use yew::prelude::*;
 
 pub mod model;
-mod components;
+pub mod components;
+use model::{Game, Team, Quest, LogEntry};
+use components::GameComponent;
 
 fn main() {
     // trunk serve --proxy-backend=http://localhost:3000
@@ -10,5 +12,17 @@ fn main() {
 
 #[component]
 pub fn App() -> Html {
-    html!("Welcome, cyber traveler!")
+
+
+    let id = "game_id".to_string();
+    let key = "key".to_string();
+
+    let game = use_state(|| Game::get(&id, &key));
+    let teams = use_state(|| Vec::<Team>::new());    //use_state(|| Team::list(&id, &key));
+    let quests = use_state(|| Vec::<Quest>::new());    //use_state(|| Team::list(&id, &key));
+    let log = use_state(|| Vec::<LogEntry>::new());    //use_state(|| Team::list(&id, &key));
+
+    html!(
+        <GameComponent {game} {teams} {quests} {log}/>
+    )
 }
