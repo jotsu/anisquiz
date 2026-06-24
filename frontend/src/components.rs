@@ -7,14 +7,20 @@ mod picker;
 mod log;
 
 pub use game::GameComponent;
-// pub use team::TeamComponent;
-// pub use quest::QuestComponent;
-// pub use log::LogEntryComponent;
+pub use scoreboard::Scoreboard;
+pub use picker::Picker;
+pub use log::Log;
+
+
+#[derive(Clone, PartialEq)]
+pub struct GameState {
+    pub game: Game,
+    pub teams: Vec::<Team>,
+    pub quests: Vec::<Quest>,
+    pub log: Vec::<LogEntry>,
+}
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub game: UseStateHandle<Game>,
-    pub teams: UseStateHandle<Vec::<Team>>,
-    pub quests: UseStateHandle<Vec::<Quest>>,
-    pub log: UseStateHandle<Vec::<LogEntry>>,
+    pub state: UseStateHandle<GameState>,
 }

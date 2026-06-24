@@ -4,40 +4,28 @@ use chrono::NaiveDateTime;
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Properties)]
 pub struct Game {
-    pub id: String,
-    pub title: String,
-    pub created_at: NaiveDateTime,
-    pub round: u32,
-    pub turn: u32,
-    pub active_team_id: Option<String>,
-    pub active_quest_id: Option<String>,
+    id: String,
+    title: String,
+    created_at: NaiveDateTime,
+    round: u32,
+    turn: u32,
+    active_team_id: Option<String>,
+    active_quest_id: Option<String>,
 }
 
 impl Game {
     //CONSTRUCTORS
-    pub fn create(title: &String, api_key: &String) -> Self { //TODO: use API
-        Game {
-            id: "new-game-id".to_string(),
-            title: title.clone(),
-            created_at: chrono::Utc::now().naive_utc(),
-            round: 0,
-            turn: 0,
-            active_team_id: None,
-            active_quest_id: None,
-        }
+    pub fn create(title: &String, api_key: &String) -> Self {
+        todo!()
     }
-    pub fn get(id: &String, api_key: &String) -> Self { //TODO: use API
-        Game {
-            id: id.clone(),
-            title: "My Game Title".to_string(),
-            created_at: chrono::Utc::now().naive_utc(),
-            round: 0,
-            turn: 0,
-            active_team_id: None,
-            active_quest_id: None,
-        }
+    pub fn get(id: &String, api_key: &String) -> Self {
+        todo!()
     }
 
+    pub fn list(api_key: &String) -> Vec<Self>{
+        todo!()
+    }
+    
     //GETTERS
     pub fn id(&self) -> String { self.id.clone() }
     pub fn title(&self) -> String { self.title.clone() }

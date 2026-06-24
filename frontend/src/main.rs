@@ -3,7 +3,7 @@ use yew::prelude::*;
 pub mod model;
 pub mod components;
 use model::{Game, Team, Quest, LogEntry};
-use components::GameComponent;
+use components::{GameState, GameComponent};
 
 fn main() {
     // trunk serve --proxy-backend=http://localhost:3000
@@ -13,16 +13,16 @@ fn main() {
 #[component]
 pub fn App() -> Html {
 
-
-    let id = "game_id".to_string();
-    let key = "key".to_string();
-
-    let game = use_state(|| Game::get(&id, &key));
-    let teams = use_state(|| Vec::<Team>::new());    //use_state(|| Team::list(&id, &key));
-    let quests = use_state(|| Vec::<Quest>::new());    //use_state(|| Team::list(&id, &key));
-    let log = use_state(|| Vec::<LogEntry>::new());    //use_state(|| Team::list(&id, &key));
+    let game_id = "game_id".to_string();
+    let api_key = "api_key".to_string();
+    let state = use_state_eq(|| GameState {
+        game: Game::get(&game_id, &api_key),
+        teams: Team::list(&game_id, &api_key),
+        quests: Quest::list(&game_id, &api_key),
+        log: LogEntry::list(&game_id, &api_key),
+    });
 
     html!(
-        <GameComponent {game} {teams} {quests} {log}/>
+        <GameComponent {state} />
     )
 }
