@@ -1,0 +1,11 @@
+-- Add migration script here
+CREATE TABLE IF NOT EXISTS users (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    photo TEXT NOT NULL DEFAULT 'default.png',
+    verified BOOLEAN NOT NULL DEFAULT FALSE,
+    role TEXT NOT NULL DEFAULT 'user',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

@@ -55,3 +55,9 @@ impl From<sqlx::Error> for AppError {
         AppError::internal(format!("Database error: {}", err))
     }
 }
+
+impl From<jsonwebtoken::errors::Error> for AppError {
+    fn from(err: jsonwebtoken::errors::Error) -> Self {
+        AppError::internal(format!("Authentication error: {}", err))
+    }
+}

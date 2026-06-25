@@ -18,6 +18,7 @@ pub struct GameState {
     pub teams: Vec::<Team>,
     pub quests: Vec::<Quest>,
     pub log: Vec::<LogEntry>,
+    pub api_key: String,    //TODO: make it user-specific session token
 }
 
 #[derive(Properties, Clone, PartialEq)]

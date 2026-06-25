@@ -1,26 +1,29 @@
-use serde::{Serialize, Deserialize};
-use yew::Properties;
-
-#[derive(Serialize, Deserialize, Clone, PartialEq, Properties)]
-pub struct Quest {
-    id: String,
-    parent_game_id: String,
-    no: u32,
-    src: String,
-    pts: i32,
-}
+use reqwasm::http::Request;
+use super::Quest;
 
 impl Quest {
     //CONSTRUCTORS
-    pub fn create(src: &String, game_id: &String, api_key: &String) -> Self {
+    pub async fn create(src: String, game_id: String, api_key: String) -> Self {
         todo!()
     }
-    pub fn get(id: &String, api_key: &String) -> Self {
-        todo!()
+    pub async fn get(game_id: String, quest_id: String, api_key: String) -> Self {
+        Request::get(format!("/g/{}/q/{}", game_id, quest_id).as_str())
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap()
     }
 
-    pub fn list(game_id: &String, api_key: &String) -> Vec<Self>{
-        todo!()
+    pub async fn list(game_id: String, api_key: String) -> Vec<Self> {
+        Request::get(format!("/g/{}/quests", game_id).as_str())
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap()
     }
 
     //GETTERS

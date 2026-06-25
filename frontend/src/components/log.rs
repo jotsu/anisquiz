@@ -7,7 +7,7 @@ pub fn Log(props: &Props) -> Html {
         <ol class="log">
             for entry in &props.state.log {
                 <li class="log-entry" id={entry.id()}>
-                    {format!("{}: {}", entry.created_at(), entry.message())}
+                    {format!("{}: {}", entry.created_at().naive_local(), entry.message())}
                 </li>
             }
         </ol>

@@ -12,17 +12,47 @@ fn main() {
 
 #[component]
 pub fn App() -> Html {
+    let loading = use_state(|| true);
 
     let game_id = "game_id".to_string();
     let api_key = "api_key".to_string();
+
     let state = use_state_eq(|| GameState {
-        game: Game::get(&game_id, &api_key),
-        teams: Team::list(&game_id, &api_key),
-        quests: Quest::list(&game_id, &api_key),
-        log: LogEntry::list(&game_id, &api_key),
+        game: Game::new(),
+        teams: Vec::<Team>::new(),
+        quests: Vec::<Quest>::new(),
+        log: Vec::<LogEntry>::new(),
+        api_key: api_key.clone(),
     });
+    
+    {
+        let state = state.clone();
+        let loading = loading.clone();
+        loading.set(true);
+        wasm_bindgen_futures::spawn_local(async move {
+            state.set(GameState {
+                game: Game::get(game_id.clone(), api_key.clone()).await,
+                teams: Team::list(game_id.clone(), api_key.clone()).await,
+                quests: Quest::list(game_id.clone(), api_key.clone()).await,
+                log: LogEntry::list(game_id.clone(), api_key.clone()).await,
+                api_key: api_key.to_string(),
+            });
+            loading.set(false);
+        });
+    }
+
+    if *loading {
+        return html! { <p>{ "Loading..." }</p> }
+    }
 
     html!(
-        <GameComponent {state} />
+        <>
+            <nav>
+                <h1>{format!("🍋AniSquiz | {}", state.game.title())}</h1>
+                <button>{"New Game"}</button>
+                <button>{"Load Game"}</button>
+            </nav>
+            <GameComponent {state} />
+        </>
     )
 }

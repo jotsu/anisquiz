@@ -1,26 +1,29 @@
-use serde::{Serialize, Deserialize};
-use yew::Properties;
-
-#[derive(Serialize, Deserialize, Clone, PartialEq, Properties)]
-pub struct Team {
-    id: String,
-    parent_game_id: String,
-    no: u32,
-    name: String,
-    score: i32,
-}
+use reqwasm::http::Request;
+use super::Team;
 
 impl Team {
     //CONSTRUCTORS
-    pub fn create(game_id: &String, api_key: &String) -> Self {
+    pub async fn create(game_id: String, api_key: String) -> Self {
         todo!()
     }
-    pub fn get(id: &String, api_key: &String) -> Self{
-        todo!()
+    pub async fn get(game_id: String, team_id: String, api_key: String) -> Self{
+        Request::get(format!("/g/{}/t/{}", game_id, team_id).as_str())
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap()
     }
 
-    pub fn list(game_id: &String, api_key: &String) -> Vec<Self> {
-        todo!()
+    pub async fn list(game_id: String, api_key: String) -> Vec<Self> {
+        Request::get(format!("/g/{}/teams", game_id).as_str())
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap()
     }
     
     //GETTERS
