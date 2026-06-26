@@ -79,7 +79,7 @@ impl Game {
         Json(payload): Json<CreateGame>,
     ) -> Result<(StatusCode, Json<Game>), AppError> {
         let id = Uuid::new_v4().to_string();
-        let row = sqlx::query_as::<_, Game>(
+        let game = sqlx::query_as::<_, Game>(
             "INSERT INTO games (id, owner_id, title) VALUES (?, ?, ?) RETURNING *"
         )
         .bind(&id)
@@ -88,7 +88,7 @@ impl Game {
         .fetch_one(&state.pool)
         .await?;
 
-        Ok((StatusCode::CREATED, Json(row)))
+        Ok((StatusCode::CREATED, Json(game)))
     }
 
     pub async fn list(
@@ -375,7 +375,7 @@ impl LogEntry {
         ) {
             Ok((StatusCode::OK, Json(log)))
         } else {
-            Err(AppError::not_found("LogEntry not found."))
+            Err(AppError::not_found("Log entry not found."))
         }
     }
 }

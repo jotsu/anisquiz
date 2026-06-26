@@ -1,12 +1,22 @@
 use chrono::prelude::*;
+use yew::{Properties, UseStateHandle};
 use serde::{Serialize, Deserialize};
 
-mod game;
-mod team;
-mod quest;
-mod log;
+#[derive(Properties, Clone, PartialEq)]
+pub struct Props{
+    pub state: UseStateHandle<GameState>,
+    pub token: String,
+}
 
-#[derive(Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Clone, PartialEq)]
+pub struct GameState {
+    pub game: Game,
+    pub teams: Vec::<Team>,
+    pub quests: Vec::<Quest>,
+    pub logs: Vec::<LogEntry>,
+}
+
+#[derive(Clone, PartialEq)]
 pub struct User {
     pub id: String,
     pub name: String,
@@ -18,10 +28,10 @@ pub struct User {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct Game {
     pub id: String,
-    pub owner_user_id: String,
+    pub owner_id: String,
     pub title: String,
     pub created_at: DateTime<Utc>,
     pub round: u32,
@@ -30,7 +40,7 @@ pub struct Game {
     pub active_quest_id: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct Team {
     pub id: String,
     pub parent_game_id: String,
@@ -39,7 +49,7 @@ pub struct Team {
     pub score: i32,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct Quest {
     pub id: String,
     pub parent_game_id: String,
@@ -48,7 +58,7 @@ pub struct Quest {
     pub pts: i32,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct LogEntry {
     pub id: String,
     pub parent_game_id: String,

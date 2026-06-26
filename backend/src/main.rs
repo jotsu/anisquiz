@@ -16,7 +16,7 @@ pub use errors::AppError;
 #[derive(Clone)]
 pub struct AppState {
     pool: SqlitePool,
-    api_key: String,
+    // api_key: String,
     jwt_secret: String,
 }
 
@@ -35,12 +35,10 @@ async fn main() {
         .run(&pool)
         .await
         .expect("Failed to run migrations");
-    let api_key = std::env::var("API_KEY")
-        .expect("API_KEY must be set");
     let jwt_secret = std::env::var("JWT_SECRET")
         .expect("JWT_SECRET must be set");
 
-    let state = AppState { pool, api_key, jwt_secret };
+    let state = AppState { pool, jwt_secret };
 
     let protected = Router::new()
         .route("/games", post(Game::create).get(Game::list))
