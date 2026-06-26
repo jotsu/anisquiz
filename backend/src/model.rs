@@ -24,7 +24,7 @@ pub struct Password {
 #[derive(Serialize, Deserialize, FromRow, Clone)]
 pub struct Game {
     pub id: String,
-    pub owner_user_id: String,
+    pub owner_id: String,
     pub title: String,
     pub created_at: DateTime<Utc>,
     pub round: u32,
@@ -55,6 +55,6 @@ pub struct Quest {
 pub struct LogEntry {
     pub id: String,
     pub parent_game_id: String,
-    pub created_at: NaiveDateTime,
+    pub created_at: DateTime<Utc>,
     pub message: String,
 }

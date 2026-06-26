@@ -16,3 +16,8 @@ pub struct CreateQuest {
     pub no: u32,
     pub src: String,
 }
+
+#[derive(Deserialize)]
+pub struct CreateLogEntry {
+    pub message: String,
+}

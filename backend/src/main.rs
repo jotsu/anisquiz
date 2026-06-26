@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use sqlx::sqlite::{SqlitePool, SqliteConnectOptions};
 use axum::{
     Router,
