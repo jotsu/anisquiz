@@ -1,6 +1,6 @@
 use chrono::prelude::*;
 use yew::{Properties, UseStateHandle};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize};
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props{
@@ -16,7 +16,7 @@ pub struct GameState {
     pub logs: Vec::<LogEntry>,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct User {
     pub id: String,
     pub name: String,

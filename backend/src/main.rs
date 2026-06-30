@@ -10,7 +10,7 @@ mod api;
 mod errors;
 
 use model::{User, Game, Team, Quest, LogEntry};
-use api::auth::auth_middleware;
+use api::auth_middleware;
 pub use errors::AppError;
 
 #[derive(Clone)]

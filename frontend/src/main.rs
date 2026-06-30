@@ -17,36 +17,80 @@ fn main() {
 #[component]
 pub fn App() -> Html {
     
-    let state= use_state_eq(|| GameState::new());
+    let token = use_state_eq(|| None);
+    let user_games_list = use_state_eq(|| Vec::<Game>::new());
+    let game_state= use_state_eq(|| GameState::new());
+    let selected_game_id = use_state_eq(|| None);
+    let error = use_state_eq(|| None);
     let loading = use_state_eq(|| true);
-    let error = use_state_eq(|| false);
-    
-    let token = "my_jwt_token".to_string();
-    let game_id = "game_id".to_string();
 
     {
-        let state = state.clone();
         let token = token.clone();
-        let game_id = game_id.clone();
-        let loading = loading.clone();
+        let user_games_list = user_games_list.clone();
+        let selected_game_id = selected_game_id.clone();
+        let game_state = game_state.clone();
         let error = error.clone();
+        let loading = loading.clone();
+        error.set(None);
         loading.set(true);
-        error.set(false);
         wasm_bindgen_futures::spawn_local(async move {
-            if let Ok(s) = GameState::get(&game_id, &token).await {
-                state.set(s);
-                error.set(false);
-                loading.set(false);
-            } else {
-                error.set(true);
-                loading.set(false);
+            match (*token, *selected_game_id) {
+                (Some(t), Some(g)) => {
+                    match GameState::get(g, t).await {
+                        Ok(s) => {
+                            game_state.set(s);
+                            error.set(None);
+                            loading.set(false);
+                        },
+                        Err(e) => {
+                            error.set(Some(e));
+                            loading.set(false);
+                        }
+                    }
+                }
+                (Some(t), None) => {
+                    match Game::list(t).await {
+                        Ok(l) => {
+                            game_state.set(GameState::new());
+                            user_games_list.set(l);
+                            error.set(None);
+                            loading.set(false);
+                        }
+                        Err(e) => {
+                            game_state.set(GameState::new());
+                            error.set(Some(e));
+                            loading.set(false);
+                        }
+                    }
+                },
+                (None, _) => {
+                    user_games_list.set(Vec::<Game>::new());
+                    selected_game_id.set(None);
+                    game_state.set(GameState::new());
+                    error.set(None);
+                    loading.set(false);
+                },
             }
         });
     }
 
-    match (*loading, *error) {
-        (true, _) => html! { <p>{ "Loading..." }</p> },
-        (false, true) => html! { <p>{ "Failed to load game state." }</p> },
-        (false, false) => html! { <GameComponent state={state.clone()} token={token.clone()} /> },
+    match (*loading, &*error) {
+        (true, _,) => html!{
+            "Loading..."    //TODO: Loading spinner
+        },
+        (false, None) => match (*token, *selected_game_id) {
+            (Some(t), Some(g)) => html!{
+                <GameComponent state={game_state.clone()} token={t.to_string()} />
+            },
+            (Some(t), None) => html!{
+                "Please select or create a new game"    //TODO: Games list
+            },
+            (None, _) => html!{
+                "Please log in or register" //TODO: Login page
+            } ,
+        },
+        (false, Some(e)) => html!{
+            format!("Error: {}", e.message) //TODO: Error popup
+        },
     }
 }

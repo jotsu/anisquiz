@@ -12,7 +12,7 @@ use crate::{AppState, AppError};
 // MODELS
 // ============================================================================
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct TokenClaims {
     user_id: String,   // user id
     role: String,   // user role
@@ -38,13 +38,6 @@ pub struct RegisterUser {
     pub email: String,
     pub password: String,
 }
-
-#[derive(Serialize)]
-pub struct LoginResponse {
-    pub token: String,
-    pub expires_in: i64,
-}
-
 
 // ============================================================================
 // PASSWORD HASHING

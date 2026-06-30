@@ -2,6 +2,8 @@ use chrono::prelude::*;
 use reqwasm::http::Request;
 use crate::{model::*, AppError};
 
+mod payloads;
+
 impl GameState {
     pub fn new() -> Self {
         GameState {
@@ -35,93 +37,102 @@ impl Game {
         }
     }
     
-    pub async fn create(title: String, api_key: String) -> Result::<Self, AppError> {
-        todo!()
+    pub async fn create(title: String, token: &String) -> Result::<Self, AppError> {
+        let payload = payloads::CreateGame{title};
+        Request::post("/games")
+            .body(serde_wasm_bindgen::to_value(&payload)?)
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
-    pub async fn list(api_key: String) -> Vec<Self>{
+    pub async fn list(token: &String) -> Result::<Vec<Self>, AppError>{
         Request::get("/games")
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap()
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn get(game_id: &String, token: &String) -> Result<Self, AppError> {
         Request::get(format!("/g/{}", game_id).as_str())
-            .send()
-            .await?
-            .json()
-            .await
-            .unwrap()
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 }
 
 
 impl Team {
-    pub async fn create(game_id: String, api_key: String) -> Self {
-        todo!()
+    pub async fn create(no: u32, name: String, game_id: &String, token: &String) -> Result<Self, AppError> {
+        let payload = payloads::CreateTeam{no, name};
+        Request::post(format!("/g/{}/teams", game_id).as_str())
+            .body(serde_wasm_bindgen::to_value(&payload)?)
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn list(game_id: &String, token: &String) -> Result<Vec<Self>, AppError> {
         Request::get(&format!("/g/{}/teams", game_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn get(game_id: &String, team_id: &String, token: &String) -> Result<Self, AppError> {
         Request::get(&format!("/g/{}/t/{}", game_id, team_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 }
 
 impl Quest {
-    pub async fn create(src: &String, game_id: &String, token: &String) -> Result<Self, AppError> {
-        todo!()
+    pub async fn create(no: u32, src: String, game_id: &String, token: &String) -> Result<Self, AppError> {
+        let payload = payloads::CreateQuest{no, src};
+        Request::post(format!("/g/{}/quests", game_id).as_str())
+            .body(serde_wasm_bindgen::to_value(&payload)?)
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn list(game_id: &String, token: &String) -> Result<Vec<Self>, AppError> {
         Request::get(&format!("/g/{}/quests", game_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn get(game_id: &String, quest_id: &String, token: &String) -> Result<Self, AppError> {
         Request::get(&format!("/g/{}/q/{}", game_id, quest_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 }
 
 impl LogEntry {
-    pub async fn create(message: &String, game_id: &String, token: &String) -> Result<Self, AppError> {
-        todo!()
+    pub async fn create(message: String, game_id: &String, token: &String) -> Result<Self, AppError> {
+        let payload = payloads::CreateLogEntry{message};
+        Request::post(format!("/g/{}/logs", game_id).as_str())
+            .body(serde_wasm_bindgen::to_value(&payload)?)
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn list(game_id: &String, token: &String) -> Result<Vec<Self>, AppError> {
         Request::get(&format!("/g/{}/logs", game_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 
     pub async fn get(game_id: &String, log_id: &String, token: &String) -> Result<Self, AppError> {
         Request::get(&format!("/g/{}/l/{}", game_id, log_id))
-            .send()
-            .await?
-            .json()
-            .await?
+            .header("Authorization", &format!("Bearer {}", token))
+            .send().await?
+            .json().await?
     }
 }

@@ -3,11 +3,12 @@ use chrono::prelude::*;
 use uuid::Uuid;
 use crate::{AppState, AppError, model::*};
 
-pub mod auth;
-pub mod types;
+mod auth;
+mod payloads;
 
+pub use auth::auth_middleware;
 use auth::*;
-use types::*;
+use payloads::*;
 
 impl User {
     pub async fn register(
@@ -37,7 +38,7 @@ impl User {
     pub async fn login(
         State(state): State<AppState>,
         Json(payload): Json<LoginUser>
-    ) -> Result<(StatusCode, Json<LoginResponse>), AppError> {
+    ) -> Result<(StatusCode, String), AppError> {
         let user = sqlx::query_as::<_, User>(
         "SELECT id FROM users WHERE email = ?"
         )
@@ -62,12 +63,9 @@ impl User {
             return Err(AppError::unauthorized("Failed to authenticate: Wrong username or password."));
         }
 
-        let response = LoginResponse {
-            token: create_token(&state, &user.id, &user.role)?,
-            expires_in: 24 * 3600,
-        };
+        let token = create_token(&state, &user.id, &user.role)?;
 
-        Ok((StatusCode::OK, Json(response)))
+        Ok((StatusCode::OK, token))
     }
 }
 
